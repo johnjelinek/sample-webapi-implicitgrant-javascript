@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>TradeStation OAuth 2 Implicit Grant Demo</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			$(function () {
+					var extractToken = function(hash) {
+						var match = hash.match(/access_token=(\w+)/);
+						return !!match && match[1];
+					};
+
+					var setting = {
+						'host': "tradestation.com/v2",
+						'apiKey': "your key goes here",
+						'environment': "SIM"
+					};
+
+					var host;
+					if (setting.environment == "SIM") {
+						host = "https://sim.api." + setting.host;
+					} else if (setting.environment == "PROD") {
+						host = "https://api." + setting.host;
+					}
+
+					var endUserAuthorizationEndpoint = host + "/authorize";
+				
+					var token = extractToken(document.location.hash);
+					if (token) {
+						$('div.authenticated').show();
+	
+						$('span.token').text(token);
+	
+						$.get(host + '/data/quote/YHOO?oauth_token=' + token, function(data) {
+								$('span.quote').text(data[0].Description);
+						}, "json");
+					} else {
+						$('div.authenticate').show();
+
+						var authUrl = endUserAuthorizationEndpoint +
+							"?response_type=token" +
+							"&client_id=" + setting.apiKey +
+							"&redirect_uri=" + window.location;
+				      
+						$("a.authenticate").attr("href", authUrl);
+					}
+			});
+		</script>
+		<style>
+			.hidden { display: none; }
+		</style>
+	</head>
+	<body>
+		<div class="authenticate hidden">
+			<a class="authenticate" href="">Authenticate</a>
+		</div>
+
+		<div class="authenticated hidden">
+			<p>
+			You are using token
+			<span class="token">[no token]</span>.
+			</p>
+
+			<p>
+			Example Quote Description
+			<span class="quote">[no quote description]</span>.
+			</p>
+		</div>
+	</body>
+</html>
