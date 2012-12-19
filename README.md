@@ -12,4 +12,4 @@ Modify the following with your appropriate values:
 Not Applicable
 
 ## Troubleshooting
-If there are any problems, open an [issue](sample-webapi-implicitgrant-javascript/issues) and we'll take a look! You can also give us feedback by e-mailing webapi@tradestation.com
+If there are any problems, open an [issue](sample-webapi-implicitgrant-javascript/issues) and we'll take a look! You can also give us feedback by e-mailing webapi@tradestation.com.
